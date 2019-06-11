@@ -3,9 +3,11 @@ package in.ac.sharda.loginactivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -39,23 +41,24 @@ RequestParams params;
                 {
                     client=new AsyncHttpClient();
                     params=new RequestParams();
-
-                    params.put("userName",editTextUserName.getText().toString());
-                    params.put("password",textPassword.getText().toString());
-// https://developer.android.com/studio/run/emulator-networking.html
-                    client.post("http://10.0.2.2:8080/login", params,
-                            new AsyncHttpResponseHandler() {
+                    client.get("https://jsonplaceholder.typicode.com/posts", new AsyncHttpResponseHandler() {
                         @Override
-                        public void onSuccess(int statusCode,
-                                              Header[] headers, byte[] responseBody) {
-
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            String data=new String(responseBody);
+                            Log.d("arvind",data);
                         }
+
                         @Override
-                        public void onFailure(int statusCode,
-                                              Header[] headers, byte[] responseBody,
-                                              Throwable error) {
+                        public void onFailure(int statusCode, Header[] headers,
+                                              byte[] responseBody, Throwable error) {
+                            Toast.makeText(MainActivity.this,
+                                    error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
+
+
+
                 }
             }
         });
